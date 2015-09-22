@@ -1,13 +1,16 @@
 var fs = require('fs');
+var path = require('path');
 
-fs.readFile(process.argv[2], function(err, data) {
-	
+fs.readdir(process.argv[2], function(err, list) {
+
 	if (err)
 		throw err;
 
-	var str = data.toString();
-	
-	str = str.split('\n');
+	var extension = "." + process.argv[3];
 
-	console.log(str.length - 1);	
+	for (var i = 0; i < list.length; i++) 
+	{
+		if (path.extname(list[i]) == extension)
+			console.log(list[i]);
+	}
 });
