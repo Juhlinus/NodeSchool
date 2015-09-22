@@ -1,11 +1,8 @@
-var myModule = require('./mymodule');
+var http = require('http');
 
-myModule(process.argv[2], process.argv[3], function(err, list) {
-
-	if (err)
-		throw err;
-
-	for (var i = 0; i < list.length; i++) {
-		console.log(list[i]);
-	};
+http.get(process.argv[2], function(response) {
+	
+	response.on('data', function(data) {
+		console.log(data.toString());
+	});
 });
