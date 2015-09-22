@@ -1,16 +1,11 @@
-var fs = require('fs');
-var path = require('path');
+var myModule = require('./mymodule');
 
-fs.readdir(process.argv[2], function(err, list) {
+myModule(process.argv[2], process.argv[3], function(err, list) {
 
 	if (err)
 		throw err;
 
-	var extension = "." + process.argv[3];
-
-	for (var i = 0; i < list.length; i++) 
-	{
-		if (path.extname(list[i]) == extension)
-			console.log(list[i]);
-	}
+	for (var i = 0; i < list.length; i++) {
+		console.log(list[i]);
+	};
 });
