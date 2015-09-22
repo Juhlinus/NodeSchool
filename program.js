@@ -1,29 +1,20 @@
-var http = require('http');
-var bl = require('bl');
+var net = require('net');
 
-var output = [];
-var count = 0;
+var server = net.createServer(function(socket) {
 
-function getHttp(index) {
+	var date = new Date();
 
-	http.get(process.argv[2 + index], function(response) {
-	
-		response.pipe(bl(
-			function(err, data) {
-				output[index] = data.toString();
-			})
-		);
+	var data = date.getFullYear() + '-' + 
+		(date.getMonth() < 10 ? 
+		'0' + (date.getMonth() + 1) : 
+		(date.getMonth() + 1)) + '-' + date.getDate() +
+		' ' + date.getHours() + ':' + 
+		(date.getMinutes() < 10 ? '0' + date.getMinutes() :
+		date.getMinutes());
 
-		response.on('end', function(end) {
-			count++;
-			
-			if (count === 3)
-				for (var i = 0; i < output.length; i++)
-					console.log(output[i]);
-		});
-	});
-}
+	socket.write(data + '\n');
 
-for (var i = 0; i < 3; i++) {
-	getHttp(i);
-}
+	socket.end();
+});
+
+server.listen(process.argv[2]);
